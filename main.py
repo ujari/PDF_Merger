@@ -21,7 +21,8 @@ def select_folder():
 def merge_pdfs_in_folder(folder_path, output_filename="merged.pdf"):
     merger = PdfMerger()
     global selectedFloder
-    for i in range(len(selectedFloder)):
+    n=len(selectedFloder)
+    for i in range(n):
         pdf_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".pdf")]
         pdf_files.sort()  # 파일명을 기준으로 내림차순 정렬
 
