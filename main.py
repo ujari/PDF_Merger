@@ -18,21 +18,21 @@ def select_folder():
     tkinter.messagebox.showinfo("알림",folder_selected+" 가 정상적으로 추가되었습니다.")
 
 
-def merge_pdfs_in_folder(folder_path, output_filename="merged.pdf"):
+def merge_pdfs_in_folder(output_filename="merged.pdf"):
     merger = PdfMerger()
     global selectedFloder
     n=len(selectedFloder)
-    for i in range(n):
-        pdf_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".pdf")]
+    for i in selectedFloder:
+        pdf_files = [f for f in os.listdir(i) if f.lower().endswith(".pdf")]
         pdf_files.sort()  # 파일명을 기준으로 내림차순 정렬
 
         for pdf in pdf_files:
-            pdf_path = os.path.join(folder_path, pdf)
+            pdf_path = os.path.join(i, pdf)
             merger.append(pdf_path)
 
-        output_path = os.path.join(folder_path, output_filename)
+        output_path = os.path.join(i, output_filename)
         merger.write(output_path)
-        select_folder.pop(0)
+
     
     merger.close()
     
