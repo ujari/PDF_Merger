@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import filedialog
 import tkinter.messagebox
 from PyPDF2 import PdfMerger
+from natsort import natsorted
 
 window= tk.Tk()
 window.title("PDF 병합기")
@@ -13,8 +14,9 @@ window.geometry("+200+100")
 global selectedFloder
 selectedFloder=[]
 def select_folder():
+    print("폴더선택")
     folder_selected = filedialog.askdirectory()
-    selectedFloder.append("0"+folder_selected)
+    selectedFloder.append(folder_selected)
     if(folder_selected in selectedFloder and folder_selected):
         tkinter.messagebox.showinfo("알림",folder_selected+" 가 정상적으로 추가되었습니다.")
 
@@ -29,8 +31,7 @@ def merge(output_filename="merged.pdf"):
     merger = PdfMerger()
     for i in selectedFloder:
         pdf_files = [f for f in os.listdir(i) if f.lower().endswith(".pdf")]
-        pdf_files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))) if any(c.isdigit() for c in f) else float('inf'))
-
+        natsorted(pdf_files)
         for pdf in pdf_files:
             pdf_path = os.path.join(i, pdf)
             merger.append(pdf_path)
@@ -54,10 +55,7 @@ info = tk.Label(window, text="PDF MERGER", font=("Arial", 12))
 info.pack(side="left", padx=10)  # 왼쪽에 배치되도록 설정
 
 # 변환 버튼 컴포넌트
-merge_start_button = tk.Button(window, text="변환", command=lambda: merge, width=10, height=5)
+merge_start_button = tk.Button(window, text="변환", command=lambda: merge(), width=10, height=5)
 merge_start_button.pack(side="left", padx=10)  # 왼쪽에 배치
-
-window.mainloop()
-
 
 window.mainloop()
